@@ -151,10 +151,10 @@ class ComplexValue:
             v._backward()
 
     def __sub__(self, other):
-        return self + (-other)
+        return self + (ComplexValue(Complex(-1, 0)) * other)
 
     def __rsub__(self, other):
-        return other + (-self)
+        return other + (ComplexValue(Complex(-1, 0)) * self)
 
     """ Division doesn't actually makes sense for """
 

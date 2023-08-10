@@ -26,7 +26,7 @@ def test_complex_answers():
     a = ComplexValue(c1)
     b = ComplexValue(c2)
 
-    c = a + b
+    c = a - b
     c.backward()
     print(f"c = {c}, grad of a = {a.grad}")
     # d = a * b + b**3
