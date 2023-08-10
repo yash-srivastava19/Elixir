@@ -146,7 +146,7 @@ class ComplexValue:
         build_topo(self)
 
         # One variable at a time, apply the chain rule to get the gradient.
-        self.grad = Complex(1, 1)
+        self.grad = Complex(1, 0)
         for v in reversed(topo):
             v._backward()
 

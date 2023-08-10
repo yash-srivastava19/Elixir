@@ -25,9 +25,10 @@ def test_complex_answers():
     # Test 2(With Complex numbers? )
     a = ComplexValue(c1)
     b = ComplexValue(c2)
-    print(a)
-    # c = a + b
 
+    c = a + b
+    c.backward()
+    print(f"c = {c}, grad of a = {a.grad}")
     # d = a * b + b**3
 
     # c += c + ComplexValue(Complex(1, 0))
