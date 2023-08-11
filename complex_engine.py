@@ -1,5 +1,6 @@
 """ Remove the grad calculation, we have made a similar class. How to document and write clean code is really the important thing here. """
 from typing import Any
+from math import *
 
 
 class MultiplyException(Exception):
@@ -12,7 +13,10 @@ class Complex:
         self._img = img
 
     def __repr__(self):
-        return f"{self._real}+{self._img}i"
+        if self._img >= 0:
+            return f"{self._real}+{self._img}i"
+        else:
+            return f"{self._real}{self._img}i"
 
     def __add__(self, other):
         assert isinstance(other, Complex), "Only Complex Addition Allowed"
@@ -49,12 +53,33 @@ class Complex:
 
         raise MultiplyException("Can't do that bro.")
 
+    def __truediv__(self, other):
+        assert isinstance(other, Complex), "Nah bro we can't do that"
+        return self * other.inverse()
+
     def __eq__(self, other) -> bool:
         assert isinstance(other, Complex), "Nah bro we can't do that"
         return self._real == other._real and self._img == other._img
 
     def __lt__(self, value):
         return self._real < value or self._img < value
+
+    def mod(self):
+        """Modulus of a complex number, x+iy = sqrt(x**2 + y**2)"""
+        return sqrt(self._real**2 + self._img**2)
+
+    def conjugate(self):
+        out = Complex(self._real, -self._img)
+        return out
+
+    def inverse(self):
+        if self._img == 0:
+            real = 1 / self._real
+            img = 0.0
+        else:
+            real = self.conjugate()._real / self.mod()
+            img = self.conjugate()._img / self.mod()
+        return Complex(real, img)
 
 
 class ComplexValue:
@@ -120,6 +145,9 @@ class ComplexValue:
 
         return out
 
+    def inverse(self):
+        pass
+
     def relu(self):  # This function doesn't make sense for us right now, but still
         out = ComplexValue(
             Complex(0, 0) if self.data < 0 else self.data, (self,), "ReLU"
@@ -156,7 +184,8 @@ class ComplexValue:
     def __rsub__(self, other):
         return other + (ComplexValue(Complex(-1, 0)) * self)
 
-    """ Division doesn't actually makes sense for """
+    def __truediv__(self, other):
+        return self * other.inverse()
 
     def __repr__(self):
         return (

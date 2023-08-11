@@ -20,15 +20,14 @@ from complex_engine import *
 def test_complex_answers():
     # Test 1(Addition, Multiplication, Subtraction) Passed.
     c1 = Complex(-4.0, 0.0)
-    c2 = Complex(2.0, 0.0)
+    c2 = Complex(0.6, 0.8)
+    c3 = Complex(3, 4)
 
     # Test 2(With Complex numbers? )
     a = ComplexValue(c1)
     b = ComplexValue(c2)
 
-    c = a - b
-    c.backward()
-    print(f"c = {c}, grad of a = {a.grad}")
+    print(f"c = {c3}, inverse = {c3.conjugate()}")
     # d = a * b + b**3
 
     # c += c + ComplexValue(Complex(1, 0))
