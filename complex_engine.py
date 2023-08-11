@@ -1,7 +1,6 @@
 """ Remove the grad calculation, we have made a similar class. How to document and write clean code is really the important thing here. """
 from typing import Any
 
-
 class MultiplyException(Exception):
     pass
 
@@ -50,9 +49,13 @@ class Complex:
         
         elif  isinstance(other, (int, float)) :
             return Complex(self._real + other._real, self._img + other._img)
+
+        ## Special case for ComplexValue object(Issue 4)
+        elif isinstance(other, ComplexValue)
+            return ComplexValue(Complex(self._real, self._img)) * other    # gradients will be automatically kept tracked of 
         
         raise MultiplyException("Can't do that bro.")
-
+    
     def __eq__(self, other) -> bool:
         assert isinstance(other, Complex), "Nah bro we can't do that"
         return self._real == other._real and self._img == other._img
@@ -97,7 +100,7 @@ class ComplexValue:
         out = ComplexValue(self.data * other.data, (self, other), "*")
 
         def _backward():
-            self.grad +=  other.data * out.grad     # Try doing this mathematically, you'lll find this intuitive.
+            self.grad +=  other.data * out.grad     # Try doing this mathematically, you'll find this intuitive.
             other.grad += self.data  * out.grad
         
         out._backward = _backward
