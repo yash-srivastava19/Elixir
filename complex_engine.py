@@ -2,7 +2,6 @@
 from typing import Any
 from math import *
 
-
 class MultiplyException(Exception):
     pass
 
@@ -51,16 +50,24 @@ class Complex:
         elif isinstance(other, (int, float)):
             return Complex(self._real + other._real, self._img + other._img)
 
-        raise MultiplyException("Can't do that bro.")
+        raise MultiplyException("Can't do that bro.")  # multiplication allowed for only those cases, not the other ones.
 
     def __truediv__(self, other):
         assert isinstance(other, Complex), "Nah bro we can't do that"
         return self * other.inverse()
 
+        ## Special case for ComplexValue object(Issue 4). This is ok.
+        elif isinstance(other, ComplexValue)
+            return ComplexValue(Complex(self._real, self._img)) * other    # gradients will be automatically kept tracked of 
+        
+        raise MultiplyException("Can't do that bro.")
+    
+    # This also seems ok to me.
     def __eq__(self, other) -> bool:
         assert isinstance(other, Complex), "Nah bro we can't do that"
         return self._real == other._real and self._img == other._img
 
+    # Although I'm not completely sure of how less than works, but as of now, this is OK. 
     def __lt__(self, value):
         return self._real < value or self._img < value
 
@@ -72,6 +79,7 @@ class Complex:
         out = Complex(self._real, -self._img)
         return out
 
+    # This again is OK.
     def inverse(self):
         if self._img == 0:
             real = 1 / self._real
@@ -123,6 +131,10 @@ class ComplexValue:
             )  # Try doing this mathematically, you'lll find this intuitive.
             other.grad += self.data * out.grad
 
+            self.grad +=  other.data * out.grad     # Try doing this mathematically, you'll find this intuitive.
+            other.grad += self.data  * out.grad
+        
+        # This backward loop is correct afaik.
         out._backward = _backward
 
         return out
